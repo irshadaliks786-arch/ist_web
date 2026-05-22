@@ -1,110 +1,271 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-  <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <title>Text Analyzer</title>
+  <style>
+    body { background: #f0f0f8; font-family: 'Segoe UI', sans-serif; }
 
-  <title>Hello, world!</title>
+    /* Navbar */
+    .navbar { background: #5b4fcf !important; padding: 0 1.5rem; height: 52px; }
+    .navbar-brand { color: #fff !important; font-weight: 500; display: flex; align-items: center; gap: 8px; }
+    .navbar-brand .brand-icon { background: rgba(255,255,255,0.2); border-radius: 6px; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center; font-size: 13px; }
+    .nav-link { color: rgba(255,255,255,0.85) !important; }
+    .nav-link:hover { color: #fff !important; }
+    .form-control.search-input { border-radius: 6px; border: none; font-size: 13px; width: 160px; }
+    .btn-search { background: #fff; color: #5b4fcf; border: none; border-radius: 6px; padding: 5px 14px; font-weight: 500; }
+
+    /* Breadcrumb */
+    .breadcrumb { background: #fff; border-bottom: 1px solid #e8e8f0; border-radius: 0; margin: 0; font-size: 13px; }
+
+    /* Banner */
+    .ta-banner { background: #eeeefe; border-left: 4px solid #5b4fcf; margin: 1rem 1.5rem 0; padding: 10px 14px; border-radius: 0 8px 8px 0; font-size: 14px; }
+    .ta-banner strong { color: #3a2fa0; }
+
+    /* Cards */
+    .ta-card { background: #fff; border-radius: 12px; border: 0.5px solid #e0dff5; padding: 1.25rem; margin: 1rem 1.5rem 0; }
+    .ta-card-title { display: flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 500; color: #3a2fa0; margin-bottom: 1rem; }
+    .ta-card-icon { background: #eeeefe; border-radius: 8px; width: 28px; height: 28px; display: flex; align-items: center; justify-content: center; font-size: 15px; color: #5b4fcf; }
+
+    /* Textarea */
+    textarea.ta-textarea { border: 1.5px solid #d0cef5; border-radius: 8px; padding: 10px 12px; font-size: 14px; transition: border-color .2s; }
+    textarea.ta-textarea:focus { border-color: #5b4fcf; box-shadow: none; outline: none; }
+
+    /* Stats row */
+    .ta-stats { font-size: 13px; color: #888; }
+    .ta-stats b { color: #333; }
+
+    /* Analyze button */
+    .btn-analyze { background: #5b4fcf; color: #fff; border: none; border-radius: 8px; padding: 8px 18px; font-size: 14px; font-weight: 500; }
+    .btn-analyze:hover { background: #4a3fbe; color: #fff; }
+    .btn-analyze-dark { background: #1e1e2e; color: #fff; border: none; border-radius: 8px; padding: 10px 28px; font-size: 14px; font-weight: 500; }
+    .btn-analyze-dark:hover { background: #2e2e3e; color: #fff; }
+
+    /* Toggle grid */
+    .ta-toggles { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .ta-toggle-card { border: 0.5px solid #e0dff5; border-radius: 10px; padding: 12px 14px; display: flex; align-items: center; gap: 10px; background: #fafaf8; }
+    .ta-toggle-icon { width: 32px; height: 32px; border-radius: 8px; background: #eeeefe; display: flex; align-items: center; justify-content: center; color: #5b4fcf; font-size: 14px; font-weight: 600; flex-shrink: 0; }
+    .ta-toggle-label { font-size: 13px; color: #333; flex: 1; }
+
+    /* Custom toggle switch */
+    .toggle-sw { position: relative; width: 36px; height: 20px; flex-shrink: 0; margin: 0; }
+    .toggle-sw input { opacity: 0; width: 0; height: 0; }
+    .toggle-sw .sl { position: absolute; cursor: pointer; inset: 0; background: #d0cef5; border-radius: 20px; transition: .2s; }
+    .toggle-sw .sl:before { content: ''; position: absolute; width: 14px; height: 14px; left: 3px; bottom: 3px; background: #fff; border-radius: 50%; transition: .2s; }
+    .toggle-sw input:checked + .sl { background: #5b4fcf; }
+    .toggle-sw input:checked + .sl:before { transform: translateX(16px); }
+
+    /* Footer */
+    footer { display: flex; justify-content: space-between; padding: 1rem 1.5rem; font-size: 12px; color: #aaa; margin-top: 1rem; }
+    footer a { color: #888; text-decoration: none; margin-left: 12px; }
+  </style>
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="/">Welcome to my website</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
-    </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
-      <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="http://127.0.0.1:8000/">Home <span class="sr-only">(current)</span></a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="#">contact us</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
-            Actions
-          </a>
-          <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">about us</a>
-            <a class="dropdown-item" href="#">feedback</a>
-          </div>
-
-        </li>
-      </ul>
-      <form class="form-inline my-2 my-lg-0">
-        <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-      </form>
-    </div>
-  </nav>
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>Welcome to my website!</strong> you can do anything with your text here.
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg">
+  <a class="navbar-brand" href="/">
+    <div class="brand-icon">T</div>
+    Text Analyzer
+  </a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="http://127.0.0.1:8000/">Home</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" data-toggle="modal" data-target="#emailModal">Contact Us</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown">Actions</a>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#aboutModal">About Us</a>
+          <a class="dropdown-item" href="#" data-toggle="modal" data-target="#feedbackModal">Feedback</a>
+        </div>
+      </li>
+    </ul>
+   
   </div>
-  <div class="container">
-    <form action="analyze" method="POST"enctype="multipart/form-data">{% csrf_token %}
+</nav>
 
+<!-- Breadcrumb -->
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb py-1 px-3" style="font-size:13px">
+    <li class="breadcrumb-item active">Home</li>
+  </ol>
+</nav>
 
-      <div class="form-group">
-        <label for="exampleFormControlTextarea1">Enter your text here!</label>
-        <textarea class="form-control" name="text" id="exampleFormControlTextarea1" rows="9"></textarea>
+<!-- Banner -->
 
-      </div>
-    
-  
+ 
+<div class="ta-banner alert-dismissible fade show"
+style="position:relative;"
+role="alert">
+
+  <strong>Welcome to my website!</strong>
+  You can do anything with your text here.
+
+  <button type="button" class="close"
+    onclick="this.parentElement.style.display='none';"
+    data-dismiss="alert"
+    style="position:absolute;right:2rem;top:50%;transform:translateY(-50%);line-height:1;"
+    aria-label="Close">
+
+    <span aria-hidden="true">&times;</span>
+  </button>
 
 </div>
-      <div class="custom-control custom-switch">
-        <input type="checkbox" name="removepunc" class="custom-control-input" id="customSwitch1">
-        <label class="custom-control-label" for="customSwitch1">Remove punctuations</label>
-      </div>
-      <div class="custom-control custom-switch">
-        <input type="checkbox" name="fullcaps" class="custom-control-input" id="customSwitch2">
-        <label class="custom-control-label" for="customSwitch2">convert to uppercase</label>
-      </div>
-      <div class="custom-control custom-switch">
-        <input type="checkbox" name="newlineremover" class="custom-control-input" id="customSwitch3">
-        <label class="custom-control-label" for="customSwitch3">remov extra lines</label>
-      </div>
-      <div class="custom-control custom-switch">
-        <input type="checkbox" name="spaceremover" class="custom-control-input" id="customSwitch4">
-        <label class="custom-control-label" for="customSwitch4">remove extra space</label>
-      </div>
-      <div class="custom-control custom-switch">
-        <input type="checkbox" name="charcount" class="custom-control-input" id="customSwitch5">
-        <label class="custom-control-label" for="customSwitch5">count characters</label>
-      </div>
-      <div class="custom-control custom-switch">
-        <input type="checkbox" name="numberremover" class="custom-control-input" id="customSwitch6">
-        <label class="custom-control-label" for="customSwitch6">remove numbers</label>
-      </div>
-      <button type="submit" class="btn btn-dark mt=2">analyze text</button>
+</div>
 
-    </form>
+<!-- Text Input Card -->
+<div class="ta-card">
+  <div class="ta-card-title">
+    <div class="ta-card-icon">✏️</div>
+    Enter your text here!
   </div>
-  <!-- Optional JavaScript -->
-  <!-- jQuery first, then Popper.js, then Bootstrap JS -->
-  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
-    crossorigin="anonymous"></script>
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
-    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
-    crossorigin="anonymous"></script>
-</body>
+  <form action="analyze" method="POST" enctype="multipart/form-data">{% csrf_token %}
+    <textarea class="form-control ta-textarea w-100" name="text" rows="7" placeholder="Type or paste your text here..."></textarea>
 
+    <div class="d-flex justify-content-between align-items-center mt-2">
+      
+      
+    </div>
+
+    <!-- Text Options Card -->
+    <div class="ta-card mt-3" style="margin: 1rem 0 0 0;">
+      <div class="ta-card-title">
+        <div class="ta-card-icon">⚙️</div>
+        Text Options
+      </div>
+      <div class="ta-toggles">
+
+        <div class="ta-toggle-card">
+          <div class="ta-toggle-icon">[ ]</div>
+          <span class="ta-toggle-label">Remove punctuations</span>
+          <label class="toggle-sw">
+            <input type="checkbox" name="removepunc">
+            <span class="sl"></span>
+          </label>
+        </div>
+
+        <div class="ta-toggle-card">
+          <div class="ta-toggle-icon">Aa</div>
+          <span class="ta-toggle-label">Convert to uppercase</span>
+          <label class="toggle-sw">
+            <input type="checkbox" name="fullcaps">
+            <span class="sl"></span>
+          </label>
+        </div>
+
+        <div class="ta-toggle-card">
+          <div class="ta-toggle-icon">≡</div>
+          <span class="ta-toggle-label">Remove extra lines</span>
+          <label class="toggle-sw">
+            <input type="checkbox" name="newlineremover">
+            <span class="sl"></span>
+          </label>
+        </div>
+
+        <div class="ta-toggle-card">
+          <div class="ta-toggle-icon">_␣</div>
+          <span class="ta-toggle-label">Remove extra spaces</span>
+          <label class="toggle-sw">
+            <input type="checkbox" name="spaceremover">
+            <span class="sl"></span>
+          </label>
+        </div>
+
+        <div class="ta-toggle-card">
+          <div class="ta-toggle-icon">123</div>
+          <span class="ta-toggle-label">Count characters</span>
+          <label class="toggle-sw">
+            <input type="checkbox" name="charcount">
+            <span class="sl"></span>
+          </label>
+        </div>
+
+        <div class="ta-toggle-card">
+          <div class="ta-toggle-icon">#</div>
+          <span class="ta-toggle-label">Remove numbers</span>
+          <label class="toggle-sw">
+            <input type="checkbox" name="numberremover">
+            <span class="sl"></span>
+          </label>
+        </div>
+
+      </div>
+
+      <div class="text-center mt-3">
+        <button type="submit" class="btn-analyze-dark">🚀 Analyze Text</button>
+      </div>
+    </div>
+
+  </form>
+</div>
+
+<!-- Footer -->
+<footer>
+  <span>© 2026 My Website. All rights reserved.</span>
+  <div>
+    <a href="#">Privacy Policy</a>
+    <a href="#">Terms of Service</a>
+    <a href="#">Contact Us</a>
+  </div>
+</footer>
+
+<!-- Modals (same as before, untouched) -->
+<div class="modal fade" id="emailModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title">Contact Email</h5>
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+      </div>
+      <div class="modal-body">irshadaliks786@gmail.com</div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title">About Me</h5>
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+      </div>
+      <div class="modal-body">
+        👤 About Me: I am Irshad Ali, a Computer Science Engineering (AI & ML) student at Chandigarh University.
+        I am passionate about web development and coding. I enjoy learning new technologies like Django, Python, and frontend development.
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="feedbackModal" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header"><h5 class="modal-title">Feedback</h5>
+        <button type="button" class="close" data-dismiss="modal"><span>&times;</span></button>
+      </div>
+      <div class="modal-body">
+        📩 Feedback: Your feedback is important to me. Contact me at irshadaliks786@gmail.com
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Bootstrap JS (same CDN links) -->
+<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+  integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+  integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+  integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+</body>
 </html>

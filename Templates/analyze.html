@@ -1,76 +1,290 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-  <!-- Required meta tags -->
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
     integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+  <title>Text Analyzer - Result</title>
+  <style>
+    body {
+      background-color: #f0eeff;
+    }
 
-  <title>Hello, world!</title>
+    /* ── Navbar ── */
+    .navbar {
+      background: linear-gradient(135deg, #5b3fd4, #7c5ce6) !important;
+    }
+    .navbar .navbar-brand {
+      font-weight: 500;
+      font-size: 17px;
+    }
+    .navbar .nav-link {
+      color: rgba(255, 255, 255, 0.9) !important;
+    }
+    .navbar .nav-link:hover {
+      color: #fff !important;
+    }
+    .navbar .form-control {
+      border: none;
+      border-radius: 6px;
+    }
+    .navbar .btn-search {
+      background: transparent;
+      border: 1.5px solid #fff;
+      color: #fff;
+      border-radius: 6px;
+      padding: 6px 18px;
+    }
+    .navbar .btn-search:hover {
+      background: rgba(255,255,255,0.15);
+    }
+
+    /* ── Breadcrumb ── */
+    .breadcrumb {
+      background: transparent;
+      padding: 8px 0;
+      margin-bottom: 0;
+      font-size: 13px;
+    }
+    .breadcrumb-item a {
+      color: #5b3fd4;
+      text-decoration: none;
+    }
+    .breadcrumb-item.active {
+      color: #555;
+    }
+
+    /* ── Result Card ── */
+    .result-card {
+      background: #fff;
+      border-radius: 14px;
+      padding: 2rem 2.25rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+    }
+    .result-card h2 {
+      font-size: 21px;
+      font-weight: 600;
+      color: #111;
+      margin-bottom: 8px;
+    }
+    .purple-underline {
+      width: 38px;
+      height: 3px;
+      background: #5b3fd4;
+      border-radius: 2px;
+      margin-bottom: 1.75rem;
+    }
+
+    /* ── Section Labels ── */
+    .section-label {
+      font-weight: 600;
+      font-size: 15px;
+      color: #333;
+      margin-bottom: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-label svg {
+      color: #5b3fd4;
+    }
+
+    /* ── Analyzed Text Box ── */
+    .analyzed-text-box {
+      background: #f5f3ff;
+      border-left: 4px solid #5b3fd4;
+      border-radius: 8px;
+      padding: 14px 16px;
+      font-size: 14px;
+      color: #333;
+      letter-spacing: 0.5px;
+      min-height: 70px;
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .copy-btn {
+      background: #fff;
+      border: 1px solid #d0c8f5;
+      border-radius: 6px;
+      padding: 6px 9px;
+      cursor: pointer;
+      color: #5b3fd4;
+      flex-shrink: 0;
+      line-height: 1;
+    }
+    .copy-btn:hover {
+      background: #ede9fe;
+    }
+
+   
+    /* ── Analyze Another Button ── */
+    .btn-analyze-another {
+      background: #5b3fd4;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      padding: 12px 30px;
+      font-size: 15px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+    .btn-analyze-another:hover {
+      background: #4a30b5;
+      color: #fff;
+      text-decoration: none;
+    }
+
+    hr.section-divider {
+      border-color: #ece9f8;
+      margin: 1.5rem 0;
+    }
+  </style>
 </head>
-
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-    <a class="navbar-brand" href="#">Welcome to my website</a>
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+
+  <!-- ── Navbar ── -->
+  <nav class="navbar navbar-expand-lg navbar-dark">
+    <a class="navbar-brand" href="#">
+      📄 Text Analyzer
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarContent"
+      aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <div class="collapse navbar-collapse" id="navbarContent">
       <ul class="navbar-nav mr-auto">
         <li class="nav-item active">
           <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="#">contact us</a>
+          <a class="nav-link" href="#">Contact Us</a>
         </li>
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false">
+          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Actions
           </a>
           <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <a class="dropdown-item" href="#">about us</a>
-            <a class="dropdown-item" href="#">feedback</a>
-
+            <a class="dropdown-item" href="#">About Us</a>
+            <a class="dropdown-item" href="#">Feedback</a>
+          </div>
         </li>
       </ul>
+
       <form class="form-inline my-2 my-lg-0">
         <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        <button class="btn-search my-2 my-sm-0" type="submit">Search</button>
       </form>
     </div>
   </nav>
-  <div class="alert alert-success alert-dismissible fade show" role="alert">
-    <strong>success!</strong> yor text has been analyzed.
-    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-      <span aria-hidden="true">&times;</span>
-    </button>
+
+  <!-- ── Breadcrumb ── -->
+  <div class="container-fluid px-4 pt-2">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="#">Home</a></li>
+        <li class="breadcrumb-item active" aria-current="page">analyze</li>
+      </ol>
+    </nav>
   </div>
-  <div class="container">
 
+  <!-- ── Success Alert ── -->
+  <div class="container-fluid px-4 mb-3">
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+      <strong>Success!</strong> Your text has been analyzed successfully.
+      <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+  </div>
 
-    <h1>your analyze Text - {{purpose}}</h1>
-    <p>
-    <pre>{{analyzed_text}} </pre>
-    </p>
+  <!-- ── Main Content ── -->
+  <div class="container-fluid px-4 pb-5">
+    <div class="result-card">
+
+      <h2>Your Analyze Text — {{ purpose }}</h2>
+      <div class="purple-underline"></div>
+
+      <!-- Analyzed Text Section -->
+      <div class="section-label">
+        <svg width="18" height="18" fill="none" stroke="#5b3fd4" stroke-width="2"
+          viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+          <polyline points="14 2 14 8 20 8"/>
+          <line x1="16" y1="13" x2="8" y2="13"/>
+          <line x1="16" y1="17" x2="8" y2="17"/>
+          <polyline points="10 9 9 9 8 9"/>
+        </svg>
+        Analyzed Text
+      </div>
+
+      <div class="analyzed-text-box">
+        <span id="analyzed-text"><pre>{{ analyzed_text }}</pre></span>
+        <button class="copy-btn" onclick="copyText()" title="Copy to clipboard">
+          <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"
+            viewBox="0 0 24 24">
+            <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/>
+            <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+          </svg>
+        </button>
+      </div>
+
+      <hr class="section-divider">
+
+     
+
+    </div>
+
+    <!-- Analyze Another Button -->
+    <div class="text-center mt-4">
+      <a href="/" class="btn-analyze-another">
+        <svg width="16" height="16" fill="none" stroke="#fff" stroke-width="2.5"
+          viewBox="0 0 24 24">
+          <line x1="19" y1="12" x2="5" y2="12"/>
+          <polyline points="12 19 5 12 12 5"/>
+        </svg>
+        Analyze Another Text
+      </a>
+    </div>
+  </div>
+
+  <!-- ── Scripts ── -->
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+    integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+    integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
+    integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+    crossorigin="anonymous"></script>
+
+  <script>
+    // Character count — runs on page load
+    const textEl = document.getElementById('analyzed-text');
+    const countEl = document.getElementById('char-count');
+    if (textEl && countEl) {
+      countEl.textContent = textEl.textContent.trim().length;
+    }
+
+    // Copy to clipboard
+    function copyText() {
+      const text = document.getElementById('analyzed-text').textContent;
+      navigator.clipboard.writeText(text).then(function() {
+        const btn = document.querySelector('.copy-btn');
+        btn.style.background = '#d4edda';
+        setTimeout(() => btn.style.background = '', 1200);
+      }).catch(function() {
+        alert('Copy failed. Please copy manually.');
+      });
+    }
+  </script>
+
 </body>
-
-
-</div>
-<!-- Optional JavaScript -->
-<!-- jQuery first, then Popper.js, then Bootstrap JS -->
-<script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
-  integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
-  integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/js/bootstrap.min.js"
-  integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-</body>
-
 </html>

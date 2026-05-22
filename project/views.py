@@ -22,6 +22,8 @@ def analyze(request):
     numberremover = request.POST.get('numberremover', 'off')
 
     analyzed = my_text
+ 
+    
     if (
         removepunc != "on"
         and fullcaps != "on"
@@ -84,17 +86,6 @@ def analyze(request):
         analyzed = temp
 
 
-    if charactercounter == "on":
-
-        count = 0
-
-        for char in analyzed:
-
-            if char != " ":
-
-                count = count + 1
-
-        analyzed = analyzed + "\n\nCharacter Count = " + str(count)
 
 
     if numberremover == "on":
@@ -109,6 +100,17 @@ def analyze(request):
 
         analyzed = temp
 
+    if charactercounter == "on":
+
+        count = 0
+
+        for char in analyzed:
+
+            if char != " ":
+
+                count = count + 1
+
+        analyzed = analyzed + "\n\nCharacter Count = " + str(count)
 
     params = {
 
